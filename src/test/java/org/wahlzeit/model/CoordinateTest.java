@@ -6,6 +6,47 @@ import static junit.framework.TestCase.assertEquals;
 
 public class CoordinateTest {
 
+    private static final double MIN_LATITUDE = -90.0;
+    private static final double MAX_LATITUDE = 90.0;
+    private static final double MIN_LONGITUDE = -180.0;
+    private static final double MAX_LONGITUDE = 180.0;
+
+    private static final double BOUNDARY_OFFSET = 0.000001;
+
+
+    @Test()
+    public void testValidCoordinateBoundaries() {
+        Coordinate latitudeMin = new Coordinate(MIN_LATITUDE, 0);
+        Coordinate latitudeMax = new Coordinate(MAX_LATITUDE, 0);
+        Coordinate longitudeMin = new Coordinate(0, MIN_LONGITUDE);
+        Coordinate longitudeMax = new Coordinate(0, MAX_LONGITUDE);
+
+        assertEquals(latitudeMin.getLatitude(), MIN_LATITUDE);
+        assertEquals(latitudeMax.getLatitude(), MAX_LATITUDE);
+        assertEquals(longitudeMin.getLongitude(), MIN_LONGITUDE);
+        assertEquals(longitudeMax.getLongitude(), MAX_LONGITUDE);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooSmallLatitude() {
+        new Coordinate(MIN_LATITUDE - BOUNDARY_OFFSET, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooBigLatitude() {
+        new Coordinate(MAX_LATITUDE + BOUNDARY_OFFSET, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooSmallLongitude() {
+        new Coordinate(0, MIN_LONGITUDE - BOUNDARY_OFFSET);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooBigLongitude() {
+        new Coordinate(0, MAX_LONGITUDE + BOUNDARY_OFFSET);
+    }
+
     @Test
     public void testDistance() {
         Coordinate c1 = new Coordinate(49.453941, 11.077279);
