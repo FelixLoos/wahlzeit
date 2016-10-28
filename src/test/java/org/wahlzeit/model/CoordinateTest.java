@@ -101,4 +101,20 @@ public class CoordinateTest {
         assertFalse(coordinate1a.equals(7));
         assertFalse(coordinate1a.equals("(49.453941, 11.077279)"));
     }
+
+    /**
+     * Tests for the hashCode method.
+     */
+    @Test
+    public void testHashCode() {
+        Coordinate coordinate1a = new Coordinate(49.453941, 11.077279);
+        Coordinate coordinate1b = new Coordinate(49.453941, 11.077279);
+        Coordinate coordinate2 = new Coordinate(35.129421, 80.841915);
+        Coordinate coordinate3 = new Coordinate(49.453941, 11.077278);
+
+        assertTrue(coordinate1a.hashCode() == coordinate1b.hashCode());
+
+        assertFalse(coordinate1a.hashCode() == coordinate2.hashCode());
+        assertFalse(coordinate1a.hashCode() == coordinate3.hashCode());
+    }
 }
