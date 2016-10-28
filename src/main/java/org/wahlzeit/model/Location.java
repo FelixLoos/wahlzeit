@@ -22,7 +22,6 @@ public class Location {
     }
 
     /**
-     *
      * @param  coordinate  the new value for the coordinate of the location
      */
     public void setCoordinate(Coordinate coordinate) {
