@@ -4,8 +4,11 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertTrue;
 
+/**
+ * Test cases for coordinate objects.
+ */
 public class CoordinateTest {
 
     private static final double MIN_LATITUDE = -90.0;
@@ -16,6 +19,9 @@ public class CoordinateTest {
     private static final double BOUNDARY_OFFSET = 0.000001;
 
 
+    /**
+     * Tests the valid maximum and minimum values for latitude and longitude.
+     */
     @Test()
     public void testValidCoordinateBoundaries() {
         Coordinate latitudeMin = new Coordinate(MIN_LATITUDE, 0);
@@ -29,26 +35,43 @@ public class CoordinateTest {
         assertEquals(longitudeMax.getLongitude(), MAX_LONGITUDE);
     }
 
+    /**
+     * Tests an invalid latitude (close to the minimum value).
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testTooSmallLatitude() {
         new Coordinate(MIN_LATITUDE - BOUNDARY_OFFSET, 0);
     }
 
+    /**
+     * Tests an invalid latitude (close to the maximum value).
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testTooBigLatitude() {
         new Coordinate(MAX_LATITUDE + BOUNDARY_OFFSET, 0);
     }
 
+    /**
+     * Tests an invalid longitude (close to the minimum value).
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testTooSmallLongitude() {
         new Coordinate(0, MIN_LONGITUDE - BOUNDARY_OFFSET);
     }
 
+    /**
+     * Tests an invalid longitude (close to the maximum value).
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testTooBigLongitude() {
         new Coordinate(0, MAX_LONGITUDE + BOUNDARY_OFFSET);
     }
 
+    /**
+     * Test for the getDistance method. The test is passed if the result matches
+     * the expected result in meters. No resolution for cm or mm required in the
+     * testing method.
+     */
     @Test
     public void testDistance() {
         Coordinate c1 = new Coordinate(49.453941, 11.077279);
@@ -61,6 +84,9 @@ public class CoordinateTest {
         assertEquals(expectedResult, result);
     }
 
+    /**
+     * Tests for the equals method.
+     */
     @Test
     public void testEquals() {
         Coordinate coordinate1a = new Coordinate(49.453941, 11.077279);

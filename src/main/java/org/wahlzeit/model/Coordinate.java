@@ -1,5 +1,9 @@
 package org.wahlzeit.model;
 
+/**
+ * The immutable {@code Coordinate} class represents a coordinate in the real world.
+ * It has a latitude and longitude value to specify its position.
+ */
 public class Coordinate {
 
     public static final float EARTH_RADIUS_METERS = 6371000;
@@ -14,6 +18,15 @@ public class Coordinate {
     private final double latitude;
     private final double longitude;
 
+    /**
+     * Constructs a newly allocated {@code Coordinate} object that represents
+     * the specified {@code latitude} and {@code longitude} value.
+     * An IllegalArgumentException is thrown for invalid {@code latitude} or
+     * {@code longitude} values.
+     *
+     * @param  latitude   Latitude of the coordinate in degrees
+     * @param  longitude  Longitude of the coordinate in degrees
+     */
     public Coordinate(double latitude, double longitude) {
         if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
             throw new IllegalArgumentException("Invalid latitude: " + latitude);
@@ -27,14 +40,26 @@ public class Coordinate {
         this.longitude = longitude;
     }
 
+    /**
+     * @return  the latitude value of the coordinate in degrees
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * @return  the longitude value of the coordinate in degrees
+     */
     public double getLongitude() {
         return longitude;
     }
 
+    /**
+     * Calculates and returns the distance to another coordinate (parameter). It is calculated in meters.
+     *
+     * @param  that  the other coordinate
+     * @return       distance in meters
+     */
     public double getDistance(Coordinate that) {
         double dLatitude = Math.toRadians(that.latitude - this.latitude);
         double dLongitude = Math.toRadians(that.longitude - this.longitude);
