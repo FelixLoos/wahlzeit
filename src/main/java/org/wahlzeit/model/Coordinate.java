@@ -45,4 +45,41 @@ public class Coordinate {
 
         return dist;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) {
+            return true;
+        }
+        if (object == null || !(object instanceof Coordinate)) {
+            return false;
+        }
+
+        Coordinate that = (Coordinate) object;
+
+        if (Double.compare(that.latitude, latitude) != 0 ||
+                Double.compare(that.longitude, longitude) != 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+        long temp = 0;
+
+        temp = Double.doubleToLongBits(latitude);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(longitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + latitude + ", " + longitude + ")";
+    }
 }

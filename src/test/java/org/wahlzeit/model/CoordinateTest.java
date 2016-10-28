@@ -3,6 +3,8 @@ package org.wahlzeit.model;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CoordinateTest {
 
@@ -57,5 +59,20 @@ public class CoordinateTest {
         double result = Math.round(c1.getDistance(c2));
 
         assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void testEquals() {
+        Coordinate coordinate1a = new Coordinate(49.453941, 11.077279);
+        Coordinate coordinate1b = new Coordinate(49.453941, 11.077279);
+        Coordinate coordinate2 = new Coordinate(35.129421, 80.841915);
+
+        assertTrue(coordinate1a.equals(coordinate1a));
+        assertTrue(coordinate1a.equals(coordinate1b));
+
+        assertFalse(coordinate1a.equals(coordinate2));
+        assertFalse(coordinate1a.equals(49.453941));
+        assertFalse(coordinate1a.equals(7));
+        assertFalse(coordinate1a.equals("(49.453941, 11.077279)"));
     }
 }
