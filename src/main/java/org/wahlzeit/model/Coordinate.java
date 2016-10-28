@@ -6,13 +6,13 @@ package org.wahlzeit.model;
  */
 public class Coordinate {
 
-    public static final float EARTH_RADIUS_METERS = 6371000;
+    public static final double EARTH_RADIUS_METERS = 6371000.0;
 
-    public static final double MIN_LATITUDE = -90;
-    public static final double MAX_LATITUDE = 90;
+    public static final double MIN_LATITUDE = -90.0;
+    public static final double MAX_LATITUDE = 90.0;
 
-    public static final double MIN_LONGITUDE = -180;
-    public static final double MAX_LONGITUDE = 180;
+    public static final double MIN_LONGITUDE = -180.0;
+    public static final double MAX_LONGITUDE = 180.0;
 
 
     private final double latitude;
