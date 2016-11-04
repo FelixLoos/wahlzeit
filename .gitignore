@@ -8,3 +8,4 @@
 .idea
 .project
 .classpath
+WEB-INF/appengine-generated/local_db.bin
