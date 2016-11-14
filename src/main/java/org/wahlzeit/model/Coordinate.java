@@ -28,13 +28,8 @@ public class Coordinate {
      * @param  longitude  Longitude of the coordinate in degrees
      */
     public Coordinate(double latitude, double longitude) {
-        if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
-            throw new IllegalArgumentException("Invalid latitude: " + latitude);
-        }
-
-        if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
-            throw new IllegalArgumentException("Invalid longitude: " + longitude);
-        }
+        assertLatitudeIsValid(latitude);
+        assertLongitudeIsValid(longitude);
 
         this.latitude = latitude;
         this.longitude = longitude;
@@ -69,6 +64,26 @@ public class Coordinate {
         double dist = EARTH_RADIUS_METERS * c;
 
         return dist;
+    }
+
+    /**
+     * Checks if latitude is valid. Throws an IllegalArgumentException if not.
+     * @param latitude
+     */
+    private void assertLatitudeIsValid(double latitude) {
+        if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
+            throw new IllegalArgumentException("Invalid latitude: " + latitude);
+        }
+    }
+
+    /**
+     * Checks if longitude is valid. Throws an IllegalArgumentException if not.
+     * @param longitude
+     */
+    private void assertLongitudeIsValid(double longitude) {
+        if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
+            throw new IllegalArgumentException("Invalid longitude: " + longitude);
+        }
     }
 
     @Override
