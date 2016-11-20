@@ -7,9 +7,9 @@ import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 /**
- * Test cases for coordinate objects.
+ * Test cases for SphericCoordinate objects.
  */
-public class CoordinateTest {
+public class SphericCoordinateTest {
 
     private static final double MIN_LATITUDE = -90.0;
     private static final double MAX_LATITUDE = 90.0;
@@ -79,10 +79,9 @@ public class CoordinateTest {
 
         // Distance accuracy in meters is sufficient
         double expectedResult = 13817.0;
-        double result = Math.round(c1.getDistance(c2));
-        // TODO
+        double result = c1.getDistance(c2);
 
-        assertEquals(expectedResult, result);
+        assertEquals(expectedResult, result, 0.5);
     }
 
     /**
