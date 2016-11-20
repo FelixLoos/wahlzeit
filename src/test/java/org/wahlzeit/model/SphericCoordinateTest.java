@@ -24,10 +24,10 @@ public class CoordinateTest {
      */
     @Test()
     public void testValidCoordinateBoundaries() {
-        Coordinate latitudeMin = new Coordinate(MIN_LATITUDE, 0);
-        Coordinate latitudeMax = new Coordinate(MAX_LATITUDE, 0);
-        Coordinate longitudeMin = new Coordinate(0, MIN_LONGITUDE);
-        Coordinate longitudeMax = new Coordinate(0, MAX_LONGITUDE);
+        SphericCoordinate latitudeMin = new SphericCoordinate(MIN_LATITUDE, 0);
+        SphericCoordinate latitudeMax = new SphericCoordinate(MAX_LATITUDE, 0);
+        SphericCoordinate longitudeMin = new SphericCoordinate(0, MIN_LONGITUDE);
+        SphericCoordinate longitudeMax = new SphericCoordinate(0, MAX_LONGITUDE);
 
         assertEquals(latitudeMin.getLatitude(), MIN_LATITUDE);
         assertEquals(latitudeMax.getLatitude(), MAX_LATITUDE);
@@ -40,7 +40,7 @@ public class CoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooSmallLatitude() {
-        new Coordinate(MIN_LATITUDE - BOUNDARY_OFFSET, 0);
+        new SphericCoordinate(MIN_LATITUDE - BOUNDARY_OFFSET, 0);
     }
 
     /**
@@ -48,7 +48,7 @@ public class CoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooBigLatitude() {
-        new Coordinate(MAX_LATITUDE + BOUNDARY_OFFSET, 0);
+        new SphericCoordinate(MAX_LATITUDE + BOUNDARY_OFFSET, 0);
     }
 
     /**
@@ -56,7 +56,7 @@ public class CoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooSmallLongitude() {
-        new Coordinate(0, MIN_LONGITUDE - BOUNDARY_OFFSET);
+        new SphericCoordinate(0, MIN_LONGITUDE - BOUNDARY_OFFSET);
     }
 
     /**
@@ -64,7 +64,7 @@ public class CoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooBigLongitude() {
-        new Coordinate(0, MAX_LONGITUDE + BOUNDARY_OFFSET);
+        new SphericCoordinate(0, MAX_LONGITUDE + BOUNDARY_OFFSET);
     }
 
     /**
@@ -74,12 +74,13 @@ public class CoordinateTest {
      */
     @Test
     public void testDistance() {
-        Coordinate c1 = new Coordinate(49.453941, 11.077279);
-        Coordinate c2 = new Coordinate(49.573845, 11.027041);
+        Coordinate c1 = new SphericCoordinate(49.453941, 11.077279);
+        Coordinate c2 = new SphericCoordinate(49.573845, 11.027041);
 
         // Distance accuracy in meters is sufficient
         double expectedResult = 13817.0;
         double result = Math.round(c1.getDistance(c2));
+        // TODO
 
         assertEquals(expectedResult, result);
     }
@@ -89,9 +90,9 @@ public class CoordinateTest {
      */
     @Test
     public void testEquals() {
-        Coordinate coordinate1a = new Coordinate(49.453941, 11.077279);
-        Coordinate coordinate1b = new Coordinate(49.453941, 11.077279);
-        Coordinate coordinate2 = new Coordinate(35.129421, 80.841915);
+        Coordinate coordinate1a = new SphericCoordinate(49.453941, 11.077279);
+        Coordinate coordinate1b = new SphericCoordinate(49.453941, 11.077279);
+        Coordinate coordinate2 = new SphericCoordinate(35.129421, 80.841915);
 
         assertTrue(coordinate1a.equals(coordinate1a));
         assertTrue(coordinate1a.equals(coordinate1b));
@@ -107,10 +108,10 @@ public class CoordinateTest {
      */
     @Test
     public void testHashCode() {
-        Coordinate coordinate1a = new Coordinate(49.453941, 11.077279);
-        Coordinate coordinate1b = new Coordinate(49.453941, 11.077279);
-        Coordinate coordinate2 = new Coordinate(35.129421, 80.841915);
-        Coordinate coordinate3 = new Coordinate(49.453941, 11.077278);
+        Coordinate coordinate1a = new SphericCoordinate(49.453941, 11.077279);
+        Coordinate coordinate1b = new SphericCoordinate(49.453941, 11.077279);
+        Coordinate coordinate2 = new SphericCoordinate(35.129421, 80.841915);
+        Coordinate coordinate3 = new SphericCoordinate(49.453941, 11.077278);
 
         assertTrue(coordinate1a.hashCode() == coordinate1b.hashCode());
 
