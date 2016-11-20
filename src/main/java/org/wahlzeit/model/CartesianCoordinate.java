@@ -53,17 +53,18 @@ public class CartesianCoordinate implements Coordinate {
      */
     @Override
     public double getDistance(Coordinate coordinate) {
-        if (coordinate instanceof CartesianCoordinate) {
-            CartesianCoordinate that = (CartesianCoordinate) coordinate;
-
-            double dx = Math.pow(this.x - that.x, 2);
-            double dy = Math.pow(this.y - that.y, 2);
-            double dz = Math.pow(this.z - that.z, 2);
-            double distance = Math.sqrt(dx + dy + dz);
-
-            return distance;
+        if (!(coordinate instanceof CartesianCoordinate)) {
+            throw new UnsupportedOperationException("Unsupported class type " + coordinate.getClass());
         }
-        throw new UnsupportedOperationException("Unsupported class type " + coordinate.getClass());
+
+        CartesianCoordinate that = (CartesianCoordinate) coordinate;
+
+        double dx = Math.pow(this.x - that.x, 2);
+        double dy = Math.pow(this.y - that.y, 2);
+        double dz = Math.pow(this.z - that.z, 2);
+        double distance = Math.sqrt(dx + dy + dz);
+
+        return distance;
     }
 
     @Override

@@ -84,6 +84,14 @@ public class SphericCoordinateTest {
         assertEquals(expectedResult, result, 0.5);
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testInvalidGetDistance() {
+        Coordinate c1 = new SphericCoordinate(10, 50);
+        Coordinate c2 = new CartesianCoordinate(1, 1, 1);
+
+        c1.getDistance(c2);
+    }
+
     /**
      * Tests for the equals method.
      */

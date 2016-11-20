@@ -57,19 +57,20 @@ public class SphericCoordinate implements Coordinate {
      */
     @Override
     public double getDistance(Coordinate coordinate) {
-        if (coordinate instanceof SphericCoordinate) {
-            SphericCoordinate that = (SphericCoordinate) coordinate;
-
-            double dLatitude = Math.toRadians(that.latitude - this.latitude);
-            double dLongitude = Math.toRadians(that.longitude - this.longitude);
-
-            double a = Math.pow(Math.sin(dLatitude / 2), 2) + Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(that.latitude)) * Math.pow(Math.sin(dLongitude / 2), 2);
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            double distance = EARTH_RADIUS_METERS * c;
-
-            return distance;
+        if (!(coordinate instanceof SphericCoordinate)) {
+            throw new UnsupportedOperationException("Unsupported class type " + coordinate.getClass());
         }
-        throw new UnsupportedOperationException("Unsupported class type " + coordinate.getClass());
+
+        SphericCoordinate that = (SphericCoordinate) coordinate;
+
+        double dLatitude = Math.toRadians(that.latitude - this.latitude);
+        double dLongitude = Math.toRadians(that.longitude - this.longitude);
+
+        double a = Math.pow(Math.sin(dLatitude / 2), 2) + Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(that.latitude)) * Math.pow(Math.sin(dLongitude / 2), 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = EARTH_RADIUS_METERS * c;
+
+        return distance;
     }
 
     /**

@@ -38,6 +38,14 @@ public class CartesianCoordinateTest {
         assertEquals(expectedResult, result, 0.01);
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testInvalidGetDistance() {
+        Coordinate c1 = new CartesianCoordinate(-10, -10, -5);
+        Coordinate c2 = new SphericCoordinate(20, 30);
+
+        c1.getDistance(c2);
+    }
+
     /**
      * Tests for the equals method.
      */
