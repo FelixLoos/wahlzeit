@@ -1,9 +1,16 @@
 package org.wahlzeit.model;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TestRule;
+import org.wahlzeit.testEnvironmentProvider.LocalDatastoreServiceTestConfigProvider;
 
 public class AlcoholPhotoFactoryTest {
+
+    @ClassRule
+    public static TestRule chain = RuleChain.outerRule(new LocalDatastoreServiceTestConfigProvider());
 
     @Test
     public void createAlcoholPhotoTest() {

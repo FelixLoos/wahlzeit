@@ -1,8 +1,11 @@
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Subclass;
+
 /**
  * The AlcoholPhoto class provides information for a user-uploaded photo of an alcoholic drink.
  */
+@Subclass
 public class AlcoholPhoto extends Photo {
 
     protected AlcoholType alcoholType;
