@@ -18,21 +18,35 @@ public class SphericCoordinateTest {
 
     private static final double BOUNDARY_OFFSET = 0.000001;
 
+    /**
+     * Tests the getters for the SphericCoordinate.
+     */
+    @Test
+    public void testGetters() {
+        final double latitude = -30;
+        final double longitude = 60.523232;
+        final double radius = 8002;
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(latitude, longitude, radius);
+
+        assertEquals(latitude, sphericCoordinate.getLatitude(), 0);
+        assertEquals(longitude, sphericCoordinate.getLongitude(), 0);
+        assertEquals(radius, sphericCoordinate.getRadius(), 0);
+    }
 
     /**
      * Tests the valid maximum and minimum values for latitude and longitude.
      */
-    @Test()
+    @Test
     public void testValidCoordinateBoundaries() {
         SphericCoordinate latitudeMin = new SphericCoordinate(MIN_LATITUDE, 0);
         SphericCoordinate latitudeMax = new SphericCoordinate(MAX_LATITUDE, 0);
         SphericCoordinate longitudeMin = new SphericCoordinate(0, MIN_LONGITUDE);
         SphericCoordinate longitudeMax = new SphericCoordinate(0, MAX_LONGITUDE);
 
-        assertEquals(latitudeMin.getLatitude(), MIN_LATITUDE);
-        assertEquals(latitudeMax.getLatitude(), MAX_LATITUDE);
-        assertEquals(longitudeMin.getLongitude(), MIN_LONGITUDE);
-        assertEquals(longitudeMax.getLongitude(), MAX_LONGITUDE);
+        assertEquals(MIN_LATITUDE, latitudeMin.getLatitude(), 0);
+        assertEquals(MAX_LATITUDE, latitudeMax.getLatitude(), 0);
+        assertEquals(MIN_LONGITUDE, longitudeMin.getLongitude(), 0);
+        assertEquals(MAX_LONGITUDE, longitudeMax.getLongitude(), 0);
     }
 
     /**
@@ -77,19 +91,56 @@ public class SphericCoordinateTest {
         Coordinate c1 = new SphericCoordinate(49.453941, 11.077279);
         Coordinate c2 = new SphericCoordinate(49.573845, 11.027041);
 
-        // Distance accuracy in meters is sufficient
         double expectedResult = 13817.0;
         double result = c1.getDistance(c2);
 
         assertEquals(expectedResult, result, 0.5);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testInvalidGetDistance() {
-        Coordinate c1 = new SphericCoordinate(10, 50);
-        Coordinate c2 = new CartesianCoordinate(1, 1, 1);
+    /**
+     * Tests the getDistance method
+     */
+    @Test
+    public void testDistanceWithNegativeCoordinates() {
+        Coordinate c1 = new SphericCoordinate(-30.2, -60.23123);
+        Coordinate c2 = new SphericCoordinate(-8.131, -5.2342);
 
-        c1.getDistance(c2);
+        double expectedResult = 5963432.0;
+        double result = c1.getDistance(c2);
+
+        assertEquals(expectedResult, result, 0.5);
+    }
+
+    /**
+     * Test the getDistance() for one coordinate to the same coordinate.
+     */
+    @Test
+    public void testDistanceWithItself() {
+        Coordinate c1 = new SphericCoordinate(20, -10, 0.12121);
+
+        assertEquals(0, c1.getDistance(c1), 0);
+    }
+
+    /**
+     * Tests the conversion method asCartesian().
+     */
+    @Test
+    public void testAsCartesian() {
+        final double validDelta = 0.00001;
+
+        Coordinate spheric1 = new SphericCoordinate(-30.2, -60.23123);
+        Coordinate spheric2 = new SphericCoordinate(20.16546, 121);
+
+        CartesianCoordinate cartesian1 = spheric1.asCartesianCoordinate();
+        CartesianCoordinate cartesian2 = spheric2.asCartesianCoordinate();
+
+        assertEquals(2733880.2918472, cartesian1.getX(), validDelta);
+        assertEquals(-4779663.2276355, cartesian1.getY(), validDelta);
+        assertEquals(-3204740.0799812, cartesian1.getZ(), validDelta);
+
+        assertEquals(-3080166.7371492, cartesian2.getX(), validDelta);
+        assertEquals(5126258.3028560, cartesian2.getY(), validDelta);
+        assertEquals(2196289.9817098, cartesian2.getZ(), validDelta);
     }
 
     /**
