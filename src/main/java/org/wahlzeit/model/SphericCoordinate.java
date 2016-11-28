@@ -4,7 +4,7 @@ package org.wahlzeit.model;
  * The immutable {@code SphericCoordinate} class represents a coordinate in the real world.
  * It has a latitude and longitude value to specify its position.
  */
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
 
     public static final double EARTH_RADIUS_METERS = 6371000.0;
 
@@ -17,6 +17,20 @@ public class SphericCoordinate implements Coordinate {
 
     protected final double latitude;
     protected final double longitude;
+    protected final double radius;
+
+    protected final CartesianCoordinate asCartesianCoordinate;
+
+    /**
+     * Overloading constructor for SphericCoordinate. Uses the earth radius in
+     * meters as default parameter for the radius.
+     *
+     * @param  latitude   Latitude of the coordinate in degrees
+     * @param  longitude  Longitude of the coordinate in degrees
+     */
+    public SphericCoordinate(double latitude, double longitude) {
+        this(latitude, longitude, EARTH_RADIUS_METERS);
+    }
 
     /**
      * Constructs a newly allocated {@code SphericCoordinate} object that represents
@@ -26,13 +40,17 @@ public class SphericCoordinate implements Coordinate {
      *
      * @param  latitude   Latitude of the coordinate in degrees
      * @param  longitude  Longitude of the coordinate in degrees
+     * @param  radius     radius
      */
-    public SphericCoordinate(double latitude, double longitude) {
+    public SphericCoordinate(double latitude, double longitude, double radius) {
         assertLatitudeIsValid(latitude);
         assertLongitudeIsValid(longitude);
 
         this.latitude = latitude;
         this.longitude = longitude;
+        this.radius = radius;
+
+        this.asCartesianCoordinate = calculateCartesianCoordinate();
     }
 
     /**
@@ -50,34 +68,42 @@ public class SphericCoordinate implements Coordinate {
     }
 
     /**
-     * Calculates and returns the distance to another coordinate. The distance is calculated in meters.
+     * @return  the radius value of the coordinate
+     */
+    public double getRadius() {
+        return radius;
+    }
+
+    /**
+     * Returns the specific CartesianCoordinate implementation for the SphericCoordinate object.
      *
-     * @param  coordinate  the other coordinate
-     * @return             distance in meters
+     * @return CartesianCoordinate object
      */
     @Override
-    public double getDistance(Coordinate coordinate) {
-        if (!(coordinate instanceof SphericCoordinate)) {
-            throw new UnsupportedOperationException("Unsupported class type " + coordinate.getClass());
-        }
+    public CartesianCoordinate asCartesianCoordinate() {
+        return asCartesianCoordinate;
+    }
 
-        SphericCoordinate that = (SphericCoordinate) coordinate;
-
-        double dLatitude = Math.toRadians(that.latitude - this.latitude);
-        double dLongitude = Math.toRadians(that.longitude - this.longitude);
-
-        double a = Math.pow(Math.sin(dLatitude / 2), 2) + Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(that.latitude)) * Math.pow(Math.sin(dLongitude / 2), 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = EARTH_RADIUS_METERS * c;
-
-        return distance;
+    /**
+     * Calculates the CartesianCoordinate representation for the SphericCoordinate.
+     *
+     * @return CartesianCoordinate object
+     */
+    protected CartesianCoordinate calculateCartesianCoordinate() {
+        double latRadian = Math.toRadians(latitude);
+        double longRadian = Math.toRadians(longitude);
+        double x = radius * Math.cos(latRadian) * Math.cos(longRadian);
+        double y = radius * Math.cos(latRadian) * Math.sin(longRadian);
+        double z = radius * Math.sin(latRadian);
+        return new CartesianCoordinate(x, y, z);
     }
 
     /**
      * Checks if latitude is valid. Throws an IllegalArgumentException if not.
+     *
      * @param latitude
      */
-    private void assertLatitudeIsValid(double latitude) {
+    protected void assertLatitudeIsValid(double latitude) {
         if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
             throw new IllegalArgumentException("Invalid latitude: " + latitude);
         }
@@ -85,44 +111,13 @@ public class SphericCoordinate implements Coordinate {
 
     /**
      * Checks if longitude is valid. Throws an IllegalArgumentException if not.
+     *
      * @param longitude
      */
-    private void assertLongitudeIsValid(double longitude) {
+    protected void assertLongitudeIsValid(double longitude) {
         if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
             throw new IllegalArgumentException("Invalid longitude: " + longitude);
         }
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-        if (object == null || !(object instanceof SphericCoordinate)) {
-            return false;
-        }
-
-        SphericCoordinate that = (SphericCoordinate) object;
-
-        if (Double.compare(that.latitude, latitude) != 0 ||
-            Double.compare(that.longitude, longitude) != 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        long temp = 0;
-
-        temp = Double.doubleToLongBits(latitude);
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(longitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-
-        return result;
     }
 
     @Override

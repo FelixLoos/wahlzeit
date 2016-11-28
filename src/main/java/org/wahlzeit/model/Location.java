@@ -1,10 +1,13 @@
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Ignore;
+
 /**
  * The {@code Location} class stores a {@code Coordinate} object.
  */
 public class Location {
 
+    @Ignore
     private Coordinate coordinate;
 
     /**

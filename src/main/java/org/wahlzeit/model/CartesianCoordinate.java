@@ -4,7 +4,7 @@ package org.wahlzeit.model;
  * The immutable {@code CartesianCoordinate} class represents a 3D-coordinate. It uses
  * the x/y/z-axis to specify its position.
  */
-public class CartesianCoordinate implements Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
 
     protected final double x;
     protected final double y;
@@ -46,49 +46,52 @@ public class CartesianCoordinate implements Coordinate {
     }
 
     /**
-     * Calculates and returns the distance to another coordinate. The distance is calculated in meters.
+     * Converts the Coordinate into a CartesianCoordinate object. Since this is the
+     * CartesianCoordinate implementation, it returns this.
      *
-     * @param  coordinate  the other coordinate
-     * @return             distance in meters
+     * @return a CartesianCoordinate object (this)
      */
     @Override
-    public double getDistance(Coordinate coordinate) {
-        if (!(coordinate instanceof CartesianCoordinate)) {
-            throw new UnsupportedOperationException("Unsupported class type " + coordinate.getClass());
-        }
-
-        CartesianCoordinate that = (CartesianCoordinate) coordinate;
-
-        double dx = Math.pow(this.x - that.x, 2);
-        double dy = Math.pow(this.y - that.y, 2);
-        double dz = Math.pow(this.z - that.z, 2);
-        double distance = Math.sqrt(dx + dy + dz);
-
-        return distance;
+    public CartesianCoordinate asCartesianCoordinate() {
+        return this;
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-        if (object == null || !(object instanceof CartesianCoordinate)) {
-            return false;
-        }
-
-        CartesianCoordinate that = (CartesianCoordinate) object;
-
-        if (Double.compare(that.x, x) != 0 ||
-            Double.compare(that.y, y) != 0 ||
-            Double.compare(that.z, z) != 0) {
-            return false;
-        }
-
-        return true;
+    public String toString() {
+        return "(" + x + ", " + y + ", " + z + ")";
     }
 
-    @Override
-    public int hashCode() {
+    /**
+     * Calculates and returns the shortest distance between two CartesianCoordinate objects.
+     *
+     * @param  that  another CartesianCoordinate object
+     * @return       shortest distance
+     */
+    protected double doGetDistance(CartesianCoordinate that) {
+        double dx = this.x - that.x;
+        double dy = this.y - that.y;
+        double dz = this.z - that.z;
+        return Math.sqrt(dx*dx + dy*dy + dz*dz);
+    }
+
+    /**
+     * Compares this with another CartesianCoordinate object.
+     *
+     * @param   that  the other CartesianCoordinate object
+     * @return        returns true if the two objects are equal
+     */
+    protected boolean doIsEqual(CartesianCoordinate that) {
+        return Double.compare(this.x, that.x) == 0 &
+                Double.compare(this.y, that.y) == 0 &&
+                Double.compare(this.z, that.z) == 0;
+    }
+
+    /**
+     * Calculates the hash-code for this CartesianCoordinate.
+     *
+     * @return  hash-code
+     */
+    protected int doHashCode() {
         int result;
         long temp;
 
@@ -100,10 +103,5 @@ public class CartesianCoordinate implements Coordinate {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
 
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + x + ", " + y + ", " + z + ")";
     }
 }

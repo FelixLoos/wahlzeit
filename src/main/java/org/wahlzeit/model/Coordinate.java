@@ -12,4 +12,11 @@ public interface Coordinate {
      * @return             distance in meters
      */
     double getDistance(Coordinate coordinate);
+
+    /**
+     * Converts a given Coordinate into the specific CartesianCoordinate implementation.
+     *
+     * @return  a new CartesianCoordinate object
+     */
+    CartesianCoordinate asCartesianCoordinate();
 }
