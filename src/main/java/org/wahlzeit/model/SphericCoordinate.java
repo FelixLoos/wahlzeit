@@ -45,12 +45,15 @@ public class SphericCoordinate extends AbstractCoordinate {
     public SphericCoordinate(double latitude, double longitude, double radius) {
         assertLatitudeIsValid(latitude);
         assertLongitudeIsValid(longitude);
+        assertRadiusIsValid(radius);
 
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;
 
         this.asCartesianCoordinate = calculateCartesianCoordinate();
+
+        assertClassInvariants();
     }
 
     /**
@@ -99,7 +102,17 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * Checks if latitude is valid. Throws an IllegalArgumentException if not.
+     * Check the class invariants.
+     */
+    @Override
+    protected void assertClassInvariants() {
+        assertLatitudeIsValid(latitude);
+        assertLongitudeIsValid(longitude);
+        assertRadiusIsValid(radius);
+    }
+
+    /**
+     * Checks if the latitude is valid. Throws an IllegalArgumentException if not.
      *
      * @param latitude
      */
@@ -110,13 +123,24 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * Checks if longitude is valid. Throws an IllegalArgumentException if not.
+     * Checks if the longitude is valid. Throws an IllegalArgumentException if not.
      *
      * @param longitude
      */
     protected void assertLongitudeIsValid(double longitude) {
         if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
             throw new IllegalArgumentException("Invalid longitude: " + longitude);
+        }
+    }
+
+    /**
+     * Checks if the radius is valid. Throws an IllegalArgumentException if not.
+     *
+     * @param radius
+     */
+    protected void assertRadiusIsValid(double radius) {
+        if (radius <= 0) {
+            throw new IllegalArgumentException("Invalid radius: " + radius);
         }
     }
 

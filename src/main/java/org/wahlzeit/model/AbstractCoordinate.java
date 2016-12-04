@@ -19,7 +19,11 @@ public abstract class AbstractCoordinate implements Coordinate {
         final CartesianCoordinate coordinateThis = this.asCartesianCoordinate();
         final CartesianCoordinate coordinateThat = coordinate.asCartesianCoordinate();
 
-        return coordinateThis.doGetDistance(coordinateThat);
+        final double distance = coordinateThis.doGetDistance(coordinateThat);
+
+        assertClassInvariants();
+
+        return distance;
     }
 
     /**
@@ -40,7 +44,11 @@ public abstract class AbstractCoordinate implements Coordinate {
         final CartesianCoordinate coordinateThis = this.asCartesianCoordinate();
         final CartesianCoordinate coordinateThat = ((Coordinate)object).asCartesianCoordinate();
 
-        return coordinateThis.doIsEqual(coordinateThat);
+        final boolean equal = coordinateThis.doIsEqual(coordinateThat);
+
+        assertClassInvariants();
+
+        return equal;
     }
 
     /**
@@ -51,7 +59,20 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public int hashCode() {
         final CartesianCoordinate coordinateThis = this.asCartesianCoordinate();
-        return coordinateThis.doHashCode();
+        assertCoordinateIsNotNull(coordinateThis);
+
+        final int hashCode = coordinateThis.doHashCode();
+
+        assertClassInvariants();
+
+        return hashCode;
+    }
+
+    /**
+     * Check the class invariants. Can be overridden by subclasses to check class invariants.
+     */
+    protected void assertClassInvariants() {
+
     }
 
     /**

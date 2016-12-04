@@ -82,6 +82,22 @@ public class SphericCoordinateTest {
     }
 
     /**
+     * Tests an invalid longitude (close to the maximum value).
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testZeroRadius() {
+        new SphericCoordinate(0, 0, 0);
+    }
+
+    /**
+     * Tests an invalid longitude (close to the maximum value).
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeRaidus() {
+        new SphericCoordinate(0, 0, -1);
+    }
+
+    /**
      * Test for the getDistance method. The test is passed if the result matches
      * the expected result in meters. No resolution for cm or mm required in the
      * testing method.
