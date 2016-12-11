@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Ignore;
 
+import static org.wahlzeit.utils.AssertUtil.assertArgumentIsNotNull;
+
 /**
  * The {@code Location} class stores a {@code Coordinate} object.
  */
@@ -14,6 +16,7 @@ public class Location {
      * @param  coordinate  the coordinate of the location
      */
     public Location(Coordinate coordinate) {
+        assertArgumentIsNotNull(coordinate, "coordinate");
         this.coordinate = coordinate;
     }
 
@@ -28,6 +31,7 @@ public class Location {
      * @param  coordinate  the new value for the coordinate of the location
      */
     public void setCoordinate(Coordinate coordinate) {
+        assertArgumentIsNotNull(coordinate, "coordinate");
         this.coordinate = coordinate;
     }
 }

@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import static org.wahlzeit.utils.AssertUtil.assertArgumentIsValidDouble;
+
 /**
  * The immutable {@code SphericCoordinate} class represents a coordinate in the real world.
  * It has a latitude and longitude value to specify its position.
@@ -117,6 +119,8 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param latitude
      */
     protected void assertLatitudeIsValid(double latitude) {
+        assertArgumentIsValidDouble(latitude, "latitude");
+
         if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
             throw new IllegalArgumentException("Invalid latitude: " + latitude);
         }
@@ -128,6 +132,8 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param longitude
      */
     protected void assertLongitudeIsValid(double longitude) {
+        assertArgumentIsValidDouble(longitude, "longitude");
+
         if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
             throw new IllegalArgumentException("Invalid longitude: " + longitude);
         }
@@ -139,6 +145,8 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param radius
      */
     protected void assertRadiusIsValid(double radius) {
+        assertArgumentIsValidDouble(radius, "radius");
+
         if (radius <= 0) {
             throw new IllegalArgumentException("Invalid radius: " + radius);
         }

@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import static org.wahlzeit.utils.AssertUtil.assertArgumentIsNotNull;
+
 /**
  * The AbstractCoordinate class is a generalization for the specific implementation classes
  * of the Coordinate interface. It provides code-reuse for the getDistance and equals methods.
@@ -14,7 +16,7 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     @Override
     public double getDistance(Coordinate coordinate) {
-        assertCoordinateIsNotNull(coordinate);
+        assertArgumentIsNotNull(coordinate, "coordinate");
 
         final CartesianCoordinate coordinateThis = this.asCartesianCoordinate();
         final CartesianCoordinate coordinateThat = coordinate.asCartesianCoordinate();
@@ -22,6 +24,8 @@ public abstract class AbstractCoordinate implements Coordinate {
         final double distance = coordinateThis.doGetDistance(coordinateThat);
 
         assertClassInvariants();
+
+        assert distance >= 0 : "Invalid distance value. Must be greater than or equal to 0.";
 
         return distance;
     }
@@ -59,7 +63,7 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public int hashCode() {
         final CartesianCoordinate coordinateThis = this.asCartesianCoordinate();
-        assertCoordinateIsNotNull(coordinateThis);
+        assertArgumentIsNotNull(coordinateThis, "coordinate");
 
         final int hashCode = coordinateThis.doHashCode();
 
@@ -73,16 +77,5 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     protected void assertClassInvariants() {
 
-    }
-
-    /**
-     * Asserts that the given parameter (Coordinate) ist not null. If it is null, an exception is thrown.
-     *
-     * @param coordinate
-     */
-    protected void assertCoordinateIsNotNull(Coordinate coordinate) {
-        if (coordinate == null) {
-            throw new IllegalArgumentException("Coordinate must not be empty");
-        }
     }
 }

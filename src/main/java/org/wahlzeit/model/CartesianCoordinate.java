@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import static org.wahlzeit.utils.AssertUtil.assertArgumentIsValidDouble;
+
 /**
  * The immutable {@code CartesianCoordinate} class represents a 3D-coordinate. It uses
  * the x/y/z-axis to specify its position.
@@ -19,6 +21,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @param z  the value on the z-axis
      */
     public CartesianCoordinate(double x, double y, double z) {
+        assertArgumentIsValidDouble(x, "x");
+        assertArgumentIsValidDouble(y, "y");
+        assertArgumentIsValidDouble(z, "z");
         this.x = x;
         this.y = y;
         this.z = z;

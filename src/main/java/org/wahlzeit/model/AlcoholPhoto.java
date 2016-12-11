@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Subclass;
 
+import static org.wahlzeit.utils.AssertUtil.assertArgumentIsNotNull;
+
 /**
  * The AlcoholPhoto class provides information for a user-uploaded photo of an alcoholic drink.
  */
@@ -28,7 +30,7 @@ public class AlcoholPhoto extends Photo {
      * @methodtype constructor
      */
     public AlcoholPhoto(PhotoId myId) {
-        super(myId);
+        this(myId, null);
     }
 
     /**
@@ -40,6 +42,7 @@ public class AlcoholPhoto extends Photo {
      */
     public AlcoholPhoto(PhotoId myId, AlcoholType alcoholType) {
         super(myId);
+        assertArgumentIsNotNull(myId, "id");
 
         this.alcoholType = alcoholType;
     }
@@ -73,10 +76,7 @@ public class AlcoholPhoto extends Photo {
      * @param percentage
      */
     public void setPercentage(float percentage) {
-        if (percentage < 0 || percentage > 100) {
-            throw new IllegalArgumentException("Illegal percentage value");
-        }
-
+        assertAlcoholPercentageIsValid(percentage);
         this.percentage = percentage;
     }
 
@@ -94,5 +94,16 @@ public class AlcoholPhoto extends Photo {
      */
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    /**
+     * Assert that the alcohol percentage value is valid
+     *
+     * @param percentage
+     */
+    protected void assertAlcoholPercentageIsValid(float percentage) {
+        if (percentage < 0 || percentage > 100) {
+            throw new IllegalArgumentException("Illegal percentage value");
+        }
     }
 }

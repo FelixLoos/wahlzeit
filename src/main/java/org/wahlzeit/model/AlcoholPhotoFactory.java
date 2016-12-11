@@ -4,6 +4,8 @@ import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
 
+import static org.wahlzeit.utils.AssertUtil.assertArgumentIsNotNull;
+
 public class AlcoholPhotoFactory extends PhotoFactory {
 
     private static final Logger log = Logger.getLogger(PhotoFactory.class.getName());
@@ -50,6 +52,7 @@ public class AlcoholPhotoFactory extends PhotoFactory {
      * @methodtype factory
      */
     public AlcoholPhoto createPhoto(PhotoId myId) {
+        assertArgumentIsNotNull(myId, "id");
         return new AlcoholPhoto(myId);
     }
 
@@ -59,6 +62,7 @@ public class AlcoholPhotoFactory extends PhotoFactory {
      * @methodtype factory
      */
     public AlcoholPhoto createPhoto(PhotoId myId, AlcoholType alcoholType) {
+        assertArgumentIsNotNull(myId, "id");
         return new AlcoholPhoto(myId, alcoholType);
     }
 }
