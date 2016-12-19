@@ -15,8 +15,8 @@ public class DifferentCoordinatesTest {
      */
     @Test
     public void testDistanceWithCartesianAndSpherical() {
-        Coordinate cartesian1 = new CartesianCoordinate(120, -20.121, 1293);
-        Coordinate spheric1 = new SphericCoordinate(12.4822, -0.233);
+        Coordinate cartesian1 = CartesianCoordinate.getInstance(120, -20.121, 1293);
+        Coordinate spheric1 = SphericCoordinate.getInstance(12.4822, -0.233);
 
         double expected = 6370603.413286;
         double result = cartesian1.getDistance(spheric1);
@@ -29,8 +29,8 @@ public class DifferentCoordinatesTest {
      */
     @Test
     public void testEqualsWithCartesianAndSpherical() {
-        Coordinate cartesian = new CartesianCoordinate(1725.3483606172506, 956.3762131993382, 435.1667104522825);
-        Coordinate spherical = new SphericCoordinate(12.44, 29, 2020.112);
+        Coordinate cartesian = CartesianCoordinate.getInstance(1725.3483606172506, 956.3762131993382, 435.1667104522825);
+        Coordinate spherical = SphericCoordinate.getInstance(12.44, 29, 2020.112);
 
         assertTrue(cartesian.equals(spherical));
     }
@@ -40,8 +40,8 @@ public class DifferentCoordinatesTest {
      */
     @Test
     public void testHashCodeWithCartesianAndSpherical() {
-        Coordinate cartesian = new CartesianCoordinate(1725.3483606172506, 956.3762131993382, 435.1667104522825);
-        Coordinate spherical = new SphericCoordinate(12.44, 29, 2020.112);
+        Coordinate cartesian = CartesianCoordinate.getInstance(1725.3483606172506, 956.3762131993382, 435.1667104522825);
+        Coordinate spherical = SphericCoordinate.getInstance(12.44, 29, 2020.112);
 
         assertTrue(cartesian.hashCode() == spherical.hashCode());
     }

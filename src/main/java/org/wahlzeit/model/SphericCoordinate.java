@@ -17,11 +17,57 @@ public class SphericCoordinate extends AbstractCoordinate {
     public static final double MAX_LONGITUDE = 180.0;
 
 
-    protected final double latitude;
-    protected final double longitude;
-    protected final double radius;
+    private static final Cache<String, SphericCoordinate> cache = new Cache<>();
 
-    protected final CartesianCoordinate asCartesianCoordinate;
+    /**
+     * Returns a SphericCoordinate with the given parameters. Ensures that a SphericCoordinate object
+     * with the same values is not created twice.
+     *
+     * @param latitude  Latitude of the coordinate in degrees
+     * @param longitude Longitude of the coordinate in degrees
+     * @param radius    Radius of the coordinate
+     * @return          The new SphericCoordinate object
+     */
+    public static SphericCoordinate getInstance(double latitude, double longitude, double radius) {
+        String key = getKey(latitude, longitude, radius);
+
+        if (cache.contains(key)) {
+            return cache.get(key);
+        }
+        else {
+            return cache.insert(key, new SphericCoordinate(latitude, longitude, radius));
+        }
+    }
+
+    /**
+     * Overloading method. Offers default value for radius.
+     *
+     * @param latitude  Latitude of the coordinate in degrees
+     * @param longitude Longitude of the coordinate in degrees
+     * @return          The new SphericCoordinate object
+     */
+    public static SphericCoordinate getInstance(double latitude, double longitude) {
+        return getInstance(latitude, longitude, EARTH_RADIUS_METERS);
+    }
+
+    /**
+     * Creates a unique key that is necessary for storing the SphericCoordinate object in the cache.
+     *
+     * @param latitude  Latitude of the coordinate in degrees
+     * @param longitude Longitude of the coordinate in degrees
+     * @param radius    Radius of the coordinate
+     * @return          The unique (for the given parameters) key
+     */
+    private static String getKey(double latitude, double longitude, double radius) {
+        return String.valueOf(latitude) + " " + String.valueOf(longitude) + " " + String.valueOf(radius);
+    }
+
+
+    private final double latitude;
+    private final double longitude;
+    private final double radius;
+
+    private final CartesianCoordinate asCartesianCoordinate;
 
     /**
      * Overloading constructor for SphericCoordinate. Uses the earth radius in
@@ -30,7 +76,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param  latitude   Latitude of the coordinate in degrees
      * @param  longitude  Longitude of the coordinate in degrees
      */
-    public SphericCoordinate(double latitude, double longitude) {
+    private SphericCoordinate(double latitude, double longitude) {
         this(latitude, longitude, EARTH_RADIUS_METERS);
     }
 
@@ -44,7 +90,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param  longitude  Longitude of the coordinate in degrees
      * @param  radius     radius
      */
-    public SphericCoordinate(double latitude, double longitude, double radius) {
+    private SphericCoordinate(double latitude, double longitude, double radius) {
         assertLatitudeIsValid(latitude);
         assertLongitudeIsValid(longitude);
         assertRadiusIsValid(radius);
@@ -94,13 +140,13 @@ public class SphericCoordinate extends AbstractCoordinate {
      *
      * @return CartesianCoordinate object
      */
-    protected CartesianCoordinate calculateCartesianCoordinate() {
+    private CartesianCoordinate calculateCartesianCoordinate() {
         double latRadian = Math.toRadians(latitude);
         double longRadian = Math.toRadians(longitude);
         double x = radius * Math.cos(latRadian) * Math.cos(longRadian);
         double y = radius * Math.cos(latRadian) * Math.sin(longRadian);
         double z = radius * Math.sin(latRadian);
-        return new CartesianCoordinate(x, y, z);
+        return CartesianCoordinate.getInstance(x, y, z);
     }
 
     /**
@@ -118,7 +164,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      *
      * @param latitude
      */
-    protected void assertLatitudeIsValid(double latitude) {
+    private void assertLatitudeIsValid(double latitude) {
         assertArgumentIsValidDouble(latitude, "latitude");
 
         if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE) {
@@ -131,7 +177,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      *
      * @param longitude
      */
-    protected void assertLongitudeIsValid(double longitude) {
+    private void assertLongitudeIsValid(double longitude) {
         assertArgumentIsValidDouble(longitude, "longitude");
 
         if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
@@ -144,7 +190,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      *
      * @param radius
      */
-    protected void assertRadiusIsValid(double radius) {
+    private void assertRadiusIsValid(double radius) {
         assertArgumentIsValidDouble(radius, "radius");
 
         if (radius <= 0) {

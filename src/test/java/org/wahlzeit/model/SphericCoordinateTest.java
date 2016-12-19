@@ -26,7 +26,7 @@ public class SphericCoordinateTest {
         final double latitude = -30;
         final double longitude = 60.523232;
         final double radius = 8002;
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(latitude, longitude, radius);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getInstance(latitude, longitude, radius);
 
         assertEquals(latitude, sphericCoordinate.getLatitude(), 0);
         assertEquals(longitude, sphericCoordinate.getLongitude(), 0);
@@ -38,10 +38,10 @@ public class SphericCoordinateTest {
      */
     @Test
     public void testValidCoordinateBoundaries() {
-        SphericCoordinate latitudeMin = new SphericCoordinate(MIN_LATITUDE, 0);
-        SphericCoordinate latitudeMax = new SphericCoordinate(MAX_LATITUDE, 0);
-        SphericCoordinate longitudeMin = new SphericCoordinate(0, MIN_LONGITUDE);
-        SphericCoordinate longitudeMax = new SphericCoordinate(0, MAX_LONGITUDE);
+        SphericCoordinate latitudeMin = SphericCoordinate.getInstance(MIN_LATITUDE, 0);
+        SphericCoordinate latitudeMax = SphericCoordinate.getInstance(MAX_LATITUDE, 0);
+        SphericCoordinate longitudeMin = SphericCoordinate.getInstance(0, MIN_LONGITUDE);
+        SphericCoordinate longitudeMax = SphericCoordinate.getInstance(0, MAX_LONGITUDE);
 
         assertEquals(MIN_LATITUDE, latitudeMin.getLatitude(), 0);
         assertEquals(MAX_LATITUDE, latitudeMax.getLatitude(), 0);
@@ -54,7 +54,7 @@ public class SphericCoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooSmallLatitude() {
-        new SphericCoordinate(MIN_LATITUDE - BOUNDARY_OFFSET, 0);
+        SphericCoordinate.getInstance(MIN_LATITUDE - BOUNDARY_OFFSET, 0);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SphericCoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooBigLatitude() {
-        new SphericCoordinate(MAX_LATITUDE + BOUNDARY_OFFSET, 0);
+        SphericCoordinate.getInstance(MAX_LATITUDE + BOUNDARY_OFFSET, 0);
     }
 
     /**
@@ -70,7 +70,7 @@ public class SphericCoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooSmallLongitude() {
-        new SphericCoordinate(0, MIN_LONGITUDE - BOUNDARY_OFFSET);
+        SphericCoordinate.getInstance(0, MIN_LONGITUDE - BOUNDARY_OFFSET);
     }
 
     /**
@@ -78,7 +78,7 @@ public class SphericCoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTooBigLongitude() {
-        new SphericCoordinate(0, MAX_LONGITUDE + BOUNDARY_OFFSET);
+        SphericCoordinate.getInstance(0, MAX_LONGITUDE + BOUNDARY_OFFSET);
     }
 
     /**
@@ -86,7 +86,7 @@ public class SphericCoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testZeroRadius() {
-        new SphericCoordinate(0, 0, 0);
+        SphericCoordinate.getInstance(0, 0, 0);
     }
 
     /**
@@ -94,7 +94,7 @@ public class SphericCoordinateTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeRaidus() {
-        new SphericCoordinate(0, 0, -1);
+        SphericCoordinate.getInstance(0, 0, -1);
     }
 
     /**
@@ -104,8 +104,8 @@ public class SphericCoordinateTest {
      */
     @Test
     public void testDistance() {
-        Coordinate c1 = new SphericCoordinate(49.453941, 11.077279);
-        Coordinate c2 = new SphericCoordinate(49.573845, 11.027041);
+        Coordinate c1 = SphericCoordinate.getInstance(49.453941, 11.077279);
+        Coordinate c2 = SphericCoordinate.getInstance(49.573845, 11.027041);
 
         double expectedResult = 13817.0;
         double result = c1.getDistance(c2);
@@ -118,8 +118,8 @@ public class SphericCoordinateTest {
      */
     @Test
     public void testDistanceWithNegativeCoordinates() {
-        Coordinate c1 = new SphericCoordinate(-30.2, -60.23123);
-        Coordinate c2 = new SphericCoordinate(-8.131, -5.2342);
+        Coordinate c1 = SphericCoordinate.getInstance(-30.2, -60.23123);
+        Coordinate c2 = SphericCoordinate.getInstance(-8.131, -5.2342);
 
         double expectedResult = 5963432.0;
         double result = c1.getDistance(c2);
@@ -132,7 +132,7 @@ public class SphericCoordinateTest {
      */
     @Test
     public void testDistanceWithItself() {
-        Coordinate c1 = new SphericCoordinate(20, -10, 0.12121);
+        Coordinate c1 = SphericCoordinate.getInstance(20, -10, 0.12121);
 
         assertEquals(0, c1.getDistance(c1), 0);
     }
@@ -144,8 +144,8 @@ public class SphericCoordinateTest {
     public void testAsCartesian() {
         final double validDelta = 0.00001;
 
-        Coordinate spheric1 = new SphericCoordinate(-30.2, -60.23123);
-        Coordinate spheric2 = new SphericCoordinate(20.16546, 121);
+        Coordinate spheric1 = SphericCoordinate.getInstance(-30.2, -60.23123);
+        Coordinate spheric2 = SphericCoordinate.getInstance(20.16546, 121);
 
         CartesianCoordinate cartesian1 = spheric1.asCartesianCoordinate();
         CartesianCoordinate cartesian2 = spheric2.asCartesianCoordinate();
@@ -164,9 +164,9 @@ public class SphericCoordinateTest {
      */
     @Test
     public void testEquals() {
-        Coordinate coordinate1a = new SphericCoordinate(49.453941, 11.077279);
-        Coordinate coordinate1b = new SphericCoordinate(49.453941, 11.077279);
-        Coordinate coordinate2 = new SphericCoordinate(35.129421, 80.841915);
+        Coordinate coordinate1a = SphericCoordinate.getInstance(49.453941, 11.077279);
+        Coordinate coordinate1b = SphericCoordinate.getInstance(49.453941, 11.077279);
+        Coordinate coordinate2 = SphericCoordinate.getInstance(35.129421, 80.841915);
 
         assertTrue(coordinate1a.equals(coordinate1a));
         assertTrue(coordinate1a.equals(coordinate1b));
@@ -182,10 +182,10 @@ public class SphericCoordinateTest {
      */
     @Test
     public void testHashCode() {
-        Coordinate coordinate1a = new SphericCoordinate(49.453941, 11.077279);
-        Coordinate coordinate1b = new SphericCoordinate(49.453941, 11.077279);
-        Coordinate coordinate2 = new SphericCoordinate(35.129421, 80.841915);
-        Coordinate coordinate3 = new SphericCoordinate(49.453941, 11.077278);
+        Coordinate coordinate1a = SphericCoordinate.getInstance(49.453941, 11.077279);
+        Coordinate coordinate1b = SphericCoordinate.getInstance(49.453941, 11.077279);
+        Coordinate coordinate2 = SphericCoordinate.getInstance(35.129421, 80.841915);
+        Coordinate coordinate3 = SphericCoordinate.getInstance(49.453941, 11.077278);
 
         assertTrue(coordinate1a.hashCode() == coordinate1b.hashCode());
 

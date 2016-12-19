@@ -17,7 +17,7 @@ public class CartesianCoordinateTest {
         final double x = -3063;
         final double y = 12.121941;
         final double z = 0;
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(x, y, z);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getInstance(x, y, z);
 
         assertEquals(x, cartesianCoordinate.getX(), 0);
         assertEquals(y, cartesianCoordinate.getY(), 0);
@@ -30,8 +30,8 @@ public class CartesianCoordinateTest {
      */
     @Test
     public void testDistance() {
-        Coordinate c1 = new CartesianCoordinate(300, 70.5, 800);
-        Coordinate c2 = new CartesianCoordinate(100, 30.22176, 70);
+        Coordinate c1 = CartesianCoordinate.getInstance(300, 70.5, 800);
+        Coordinate c2 = CartesianCoordinate.getInstance(100, 30.22176, 70);
 
         double expectedResult = 757.972517;
         double result = c1.getDistance(c2);
@@ -44,8 +44,8 @@ public class CartesianCoordinateTest {
      */
     @Test
     public void testDistanceWithNegativeCoordinates() {
-        Coordinate c1 = new CartesianCoordinate(-60.1221, -70, -30);
-        Coordinate c2 = new CartesianCoordinate(-10, -10, -5);
+        Coordinate c1 = CartesianCoordinate.getInstance(-60.1221, -70, -30);
+        Coordinate c2 = CartesianCoordinate.getInstance(-10, -10, -5);
 
         double expectedResult = 82.080600;
         double result = c1.getDistance(c2);
@@ -58,7 +58,7 @@ public class CartesianCoordinateTest {
      */
     @Test
     public void testDistanceWithItself() {
-        Coordinate c1 = new CartesianCoordinate(-1290, 10.1211, 140);
+        Coordinate c1 = CartesianCoordinate.getInstance(-1290, 10.1211, 140);
 
         assertEquals(0, c1.getDistance(c1), 0);
     }
@@ -68,8 +68,8 @@ public class CartesianCoordinateTest {
      */
     @Test
     public void testAsCartesian() {
-        CartesianCoordinate cartesianOld1 = new CartesianCoordinate(-60, -70.112, -30);
-        CartesianCoordinate cartesianOld2 = new CartesianCoordinate(20, 90, 1.0294032);
+        CartesianCoordinate cartesianOld1 = CartesianCoordinate.getInstance(-60, -70.112, -30);
+        CartesianCoordinate cartesianOld2 = CartesianCoordinate.getInstance(20, 90, 1.0294032);
 
         CartesianCoordinate cartesianConverted1 = cartesianOld1.asCartesianCoordinate();
         CartesianCoordinate cartesianConverted2 = cartesianOld2.asCartesianCoordinate();
@@ -88,9 +88,9 @@ public class CartesianCoordinateTest {
      */
     @Test
     public void testEquals() {
-        Coordinate coordinate1a = new CartesianCoordinate(1, 2, 3);
-        Coordinate coordinate1b = new CartesianCoordinate(1, 2, 3);
-        Coordinate coordinate2 = new CartesianCoordinate(1, 2, 3.0000001);
+        Coordinate coordinate1a = CartesianCoordinate.getInstance(1, 2, 3);
+        Coordinate coordinate1b = CartesianCoordinate.getInstance(1, 2, 3);
+        Coordinate coordinate2 = CartesianCoordinate.getInstance(1, 2, 3.0000001);
 
         assertTrue(coordinate1a.equals(coordinate1a));
         assertTrue(coordinate1a.equals(coordinate1b));
@@ -105,10 +105,10 @@ public class CartesianCoordinateTest {
      */
     @Test
     public void testHashCode() {
-        Coordinate coordinate1a = new CartesianCoordinate(50, 60, 70);
-        Coordinate coordinate1b = new CartesianCoordinate(50, 60, 70);
-        Coordinate coordinate2 = new CartesianCoordinate(100, 100, 100);
-        Coordinate coordinate3 = new CartesianCoordinate(50, 60, 70.0000001);
+        Coordinate coordinate1a = CartesianCoordinate.getInstance(50, 60, 70);
+        Coordinate coordinate1b = CartesianCoordinate.getInstance(50, 60, 70);
+        Coordinate coordinate2 = CartesianCoordinate.getInstance(100, 100, 100);
+        Coordinate coordinate3 = CartesianCoordinate.getInstance(50, 60, 70.0000001);
 
         assertTrue(coordinate1a.hashCode() == coordinate1b.hashCode());
 

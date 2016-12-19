@@ -8,9 +8,44 @@ import static org.wahlzeit.utils.AssertUtil.assertArgumentIsValidDouble;
  */
 public class CartesianCoordinate extends AbstractCoordinate {
 
-    protected final double x;
-    protected final double y;
-    protected final double z;
+    private static final Cache<String, CartesianCoordinate> cache = new Cache<>();
+
+    /**
+     * Returns a CartesianCoordinate with the given parameters. Ensures that a CartesianCoordinate object
+     * with the same values is not created twice.
+     *
+     * @param x  the value on the x-axis
+     * @param y  the value on the y-axis
+     * @param z  the value on the z-axis
+     * @return   the new CartesianCoordinate object
+     */
+    public static CartesianCoordinate getInstance(double x, double y, double z) {
+        String key = getKey(x, y, z);
+
+        if (cache.contains(key)) {
+            return cache.get(key);
+        }
+        else {
+            return cache.insert(key, new CartesianCoordinate(x, y, z));
+        }
+    }
+
+    /**
+     * Creates a unique key that is necessary for storing the CartesianCoordinate object in the cache.
+     *
+     * @param x  the value on the x-axis
+     * @param y  the value on the y-axis
+     * @param z  the value on the z-axis
+     * @return   the unique (for the given parameters) key
+     */
+    private static String getKey(double x, double y, double z) {
+        return String.valueOf(x) + " " + String.valueOf(y) + " " + String.valueOf(z);
+    }
+
+
+    private final double x;
+    private final double y;
+    private final double z;
 
     /**
      * Constructs a newly allocated {@code CartesianCoordinate} object that represents
@@ -20,7 +55,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @param y  the value on the y-axis
      * @param z  the value on the z-axis
      */
-    public CartesianCoordinate(double x, double y, double z) {
+    private CartesianCoordinate(double x, double y, double z) {
         assertArgumentIsValidDouble(x, "x");
         assertArgumentIsValidDouble(y, "y");
         assertArgumentIsValidDouble(z, "z");
