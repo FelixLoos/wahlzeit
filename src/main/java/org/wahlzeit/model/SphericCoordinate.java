@@ -46,7 +46,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param longitude Longitude of the coordinate in degrees
      * @return          The new SphericCoordinate object
      */
-    public static SphericCoordinate getInstance(double latitude, double longitude) {
+    public static synchronized SphericCoordinate getInstance(double latitude, double longitude) {
         return getInstance(latitude, longitude, EARTH_RADIUS_METERS);
     }
 

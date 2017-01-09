@@ -22,6 +22,7 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.services.Language;
 import org.wahlzeit.utils.HtmlUtil;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,10 @@ import java.text.SimpleDateFormat;
 /**
  * A model configuration for the German language.
  */
+@PatternInstance(
+		name = "Strategy",
+		participants = { "Concrete Strategy" }
+)
 public class GermanModelConfig extends AbstractModelConfig {
 
 	/**

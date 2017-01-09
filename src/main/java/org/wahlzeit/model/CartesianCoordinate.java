@@ -19,7 +19,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @param z  the value on the z-axis
      * @return   the new CartesianCoordinate object
      */
-    public static CartesianCoordinate getInstance(double x, double y, double z) {
+    public static synchronized CartesianCoordinate getInstance(double x, double y, double z) {
         String key = getKey(x, y, z);
 
         if (cache.contains(key)) {

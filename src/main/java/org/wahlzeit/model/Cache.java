@@ -31,6 +31,7 @@ public class Cache<Key, Value> {
         assertMaxSizeIsValid(maxSize);
 
         values = new LinkedHashMap<Key, Value>(maxSize, 0.75f, true) {
+            @Override
             protected boolean removeEldestEntry(Map.Entry<Key, Value> eldest) {
                 return size() > maxSize;
             }

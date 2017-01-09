@@ -1,5 +1,10 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.PatternInstance;
+
+@PatternInstance(
+        name = "Singleton"
+)
 public class AlcoholPhotoManager extends PhotoManager {
 
     static {

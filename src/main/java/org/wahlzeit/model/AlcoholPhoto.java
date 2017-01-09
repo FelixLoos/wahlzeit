@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Subclass;
+import org.wahlzeit.utils.PatternInstance;
 
 import static org.wahlzeit.utils.AssertUtil.assertArgumentIsNotNull;
 
@@ -8,6 +9,10 @@ import static org.wahlzeit.utils.AssertUtil.assertArgumentIsNotNull;
  * The AlcoholPhoto class provides information for a user-uploaded photo of an alcoholic drink.
  */
 @Subclass
+@PatternInstance(
+        name = "Abstract Factory",
+        participants = {"ConcreteProduct"}
+)
 public class AlcoholPhoto extends Photo {
 
     protected AlcoholType alcoholType;
