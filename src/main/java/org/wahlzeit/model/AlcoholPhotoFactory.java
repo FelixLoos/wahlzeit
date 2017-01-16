@@ -66,8 +66,32 @@ public class AlcoholPhotoFactory extends PhotoFactory {
      *
      * @methodtype factory
      */
-    public AlcoholPhoto createPhoto(PhotoId myId, AlcoholType alcoholType) {
+    public AlcoholPhoto createPhoto(PhotoId myId, Alcohol alcohol) {
         assertArgumentIsNotNull(myId, "id");
-        return new AlcoholPhoto(myId, alcoholType);
+        return new AlcoholPhoto(myId, alcohol);
+    }
+
+    /**
+     * Creates a new photo with an Alcohol object
+     *
+     * @param alcoholName
+     * @param alcoholType
+     * @return
+     */
+    public AlcoholPhoto createPhoto(String alcoholName, AlcoholType alcoholType) {
+        Alcohol alcohol = AlcoholManager.createAlcohol(alcoholName, alcoholType);
+        return new AlcoholPhoto(alcohol);
+    }
+
+    /**
+     * Creates a new photo with an Alcohol object
+     *
+     * @param alcoholName
+     * @param alcoholTypeName
+     * @return
+     */
+    public AlcoholPhoto createPhoto(String alcoholName, String alcoholTypeName, String[] ingredients) {
+        Alcohol alcohol = AlcoholManager.createAlcohol(alcoholName, alcoholTypeName, ingredients);
+        return new AlcoholPhoto(alcohol);
     }
 }

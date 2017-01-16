@@ -14,41 +14,16 @@ public class AlcoholPhotoTest {
     public static TestRule chain = RuleChain.outerRule(new LocalDatastoreServiceTestConfigProvider());
 
     private AlcoholPhoto photo;
+    private Alcohol alcohol;
 
     @Before
     public void setUp() {
-        photo = new AlcoholPhoto();
+        alcohol = AlcoholManager.createAlcohol("Hersbrucker Lager", "lager", new String[] { "water", "hops" });
+        photo = new AlcoholPhoto(alcohol);
     }
 
     @Test
     public void alcoholTypeTest() {
-        photo.setAlcoholType(AlcoholType.BEER);
-
-        Assert.assertEquals(AlcoholType.BEER, photo.getAlcoholType());
-    }
-
-    @Test
-    public void brandTest() {
-        String brand = "Jack Daniels";
-        photo.setBrand(brand);
-
-        Assert.assertEquals(brand, photo.getBrand());
-    }
-
-    @Test
-    public void percentageTest() {
-        photo.setPercentage(50.7f);
-
-        Assert.assertEquals(50.7f, photo.getPercentage(), 0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void invalidPercentageTest() {
-        photo.setPercentage(100.1f);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void invalidPercentageTest2() {
-        photo.setPercentage(-0.01f);
+        Assert.assertEquals(alcohol, photo.getAlcohol());
     }
 }
