@@ -14,11 +14,13 @@ public class AlcoholPhotoTest {
     public static TestRule chain = RuleChain.outerRule(new LocalDatastoreServiceTestConfigProvider());
 
     private AlcoholPhoto photo;
+    private AlcoholType alcoholType;
     private Alcohol alcohol;
 
     @Before
     public void setUp() {
-        alcohol = AlcoholManager.createAlcohol("Hersbrucker Lager", "lager", new String[] { "water", "hops" });
+        alcoholType = AlcoholManager.getInstance().getAlcoholTypeInstance("lager", new String[] { "water", "hops" });
+        alcohol = AlcoholManager.getInstance().getAlcoholInstance("Hersbrucker Lager", alcoholType);
         photo = new AlcoholPhoto(alcohol);
     }
 

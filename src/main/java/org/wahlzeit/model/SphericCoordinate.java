@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.cache.Cache;
+import org.wahlzeit.model.cache.ObjectCache;
+
 import static org.wahlzeit.utils.AssertUtil.assertArgumentIsValidDouble;
 
 /**
@@ -17,7 +20,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     public static final double MAX_LONGITUDE = 180.0;
 
 
-    private static final Cache<String, SphericCoordinate> cache = new Cache<>();
+    private static final Cache<String, SphericCoordinate> cache = new ObjectCache<>();
 
     /**
      * Returns a SphericCoordinate with the given parameters. Ensures that a SphericCoordinate object

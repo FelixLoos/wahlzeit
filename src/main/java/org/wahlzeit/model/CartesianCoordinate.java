@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.cache.Cache;
+import org.wahlzeit.model.cache.ObjectCache;
+
 import static org.wahlzeit.utils.AssertUtil.assertArgumentIsValidDouble;
 
 /**
@@ -8,7 +11,7 @@ import static org.wahlzeit.utils.AssertUtil.assertArgumentIsValidDouble;
  */
 public class CartesianCoordinate extends AbstractCoordinate {
 
-    private static final Cache<String, CartesianCoordinate> cache = new Cache<>();
+    private static final Cache<String, CartesianCoordinate> cache = new ObjectCache<>();
 
     /**
      * Returns a CartesianCoordinate with the given parameters. Ensures that a CartesianCoordinate object

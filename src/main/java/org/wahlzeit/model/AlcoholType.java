@@ -3,6 +3,7 @@ package org.wahlzeit.model;
 import org.wahlzeit.services.DataObject;
 import org.wahlzeit.utils.AssertUtil;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -20,10 +21,6 @@ public class AlcoholType extends DataObject {
         this.typeName = typeName;
         this.ingredients = ingredients;
         this.subTypes = new HashSet<>();
-    }
-
-    public Alcohol createInstance(String alcoholName) {
-        return new Alcohol(this, alcoholName);
     }
 
     public String getTypeName() {
@@ -73,6 +70,27 @@ public class AlcoholType extends DataObject {
             parent = parent.superType;
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AlcoholType that = (AlcoholType) o;
+
+        if (superType != null ? !superType.equals(that.superType) : that.superType != null) return false;
+        if (typeName != null ? !typeName.equals(that.typeName) : that.typeName != null) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(ingredients, that.ingredients);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = superType != null ? superType.hashCode() : 0;
+        result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(ingredients);
+        return result;
     }
 
     private void assertAlcoholTypeIsNotParent(AlcoholType alcoholType) {

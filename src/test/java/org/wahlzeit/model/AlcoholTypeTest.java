@@ -18,15 +18,15 @@ public class AlcoholTypeTest {
 
     @Before
     public void setup() {
-        alcohol = AlcoholManager.getAlcoholType("alcohol", new String[] { } );
+        alcohol = AlcoholManager.getInstance().getAlcoholTypeInstance("alcohol", new String[] { } );
 
-        beer = AlcoholManager.getAlcoholType("beer", new String[] { "wasser", "hefe", "hopfen" });
+        beer = AlcoholManager.getInstance().getAlcoholTypeInstance("beer", new String[] { "wasser", "hefe", "hopfen" });
 
-        beer_lager = AlcoholManager.getAlcoholType("lager", new String[] { "some", "ingredients", "here" });
-        beer_keller = AlcoholManager.getAlcoholType("keller", new String[] { "ingredients", "for", "keller", "beer" });
+        beer_lager = AlcoholManager.getInstance().getAlcoholTypeInstance("lager", new String[] { "some", "ingredients", "here" });
+        beer_keller = AlcoholManager.getInstance().getAlcoholTypeInstance("keller", new String[] { "ingredients", "for", "keller", "beer" });
 
-        hersbrucker_lager = AlcoholManager.createAlcohol("Hersbrucker Lager", beer_lager);
-        hersbrucker_keller = AlcoholManager.createAlcohol("Hersbrucker Keller", beer_keller);
+        hersbrucker_lager = AlcoholManager.getInstance().getAlcoholInstance("Hersbrucker Lager", beer_lager);
+        hersbrucker_keller = AlcoholManager.getInstance().getAlcoholInstance("Hersbrucker Keller", beer_keller);
     }
 
     @Test

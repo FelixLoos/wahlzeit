@@ -79,7 +79,7 @@ public class AlcoholPhotoFactory extends PhotoFactory {
      * @return
      */
     public AlcoholPhoto createPhoto(String alcoholName, AlcoholType alcoholType) {
-        Alcohol alcohol = AlcoholManager.createAlcohol(alcoholName, alcoholType);
+        final Alcohol alcohol = AlcoholManager.getInstance().getAlcoholInstance(alcoholName, alcoholType);
         return new AlcoholPhoto(alcohol);
     }
 
@@ -91,7 +91,8 @@ public class AlcoholPhotoFactory extends PhotoFactory {
      * @return
      */
     public AlcoholPhoto createPhoto(String alcoholName, String alcoholTypeName, String[] ingredients) {
-        Alcohol alcohol = AlcoholManager.createAlcohol(alcoholName, alcoholTypeName, ingredients);
+        final AlcoholType alcoholType = AlcoholManager.getInstance().getAlcoholTypeInstance(alcoholTypeName, ingredients);
+        final Alcohol alcohol = AlcoholManager.getInstance().getAlcoholInstance(alcoholName, alcoholType);
         return new AlcoholPhoto(alcohol);
     }
 }

@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.model.cache.Cache;
+import org.wahlzeit.model.cache.ObjectCache;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
@@ -16,19 +18,12 @@ public class CacheTest {
 
     @Before
     public void setup() {
-        cache = new Cache<>();
+        cache = new ObjectCache<>();
     }
 
     @Test
     public void testConstructor() {
-        cache = new Cache<>(VALID_MAX_SIZE);
-
-        assertEquals(VALID_MAX_SIZE, cache.getMaxSize());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidConstructor() {
-        cache = new Cache<>(INVALID_MAX_SIZE);
+        cache = new ObjectCache<>();
     }
 
     @Test
@@ -66,73 +61,17 @@ public class CacheTest {
         assertEquals("1", cache.get(1));
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testInsertTwice() {
         assertFalse(cache.contains(1));
 
         cache.insert(1, "1");
         cache.insert(1, "1");
-
-        assertTrue(cache.contains(1));
-        assertEquals("1", cache.get(1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalStateException.class)
     public void testInvalidInsert() {
         cache.insert(1, "1");
         cache.insert(1, "2");
-    }
-
-    @Test
-    public void testCaching() {
-        for (int i = 0; i < cache.getMaxSize() + 1; i++) {
-            cache.insert(i + 1, String.valueOf(i + 1));
-        }
-
-        assertFalse(cache.contains(1));
-
-        for (int i = 1; i < cache.getMaxSize() + 1; i++) {
-            assertTrue(cache.contains(i + 1));
-        }
-    }
-
-    @Test
-    public void testCacheRefreshing() {
-        for (int i = 0; i < cache.getMaxSize(); i++) {
-            cache.insert(i + 1, String.valueOf(i + 1));
-        }
-
-        // Refresh entry #1
-        cache.insert(1, String.valueOf(1));
-
-        cache.insert(cache.getMaxSize() + 1, String.valueOf(cache.getMaxSize() + 1));
-
-
-        assertTrue(cache.contains(1));
-        assertFalse(cache.contains(2));
-
-        for (int i = 2; i < cache.getMaxSize() + 1; i++) {
-            assertTrue(cache.contains(i + 1));
-        }
-    }
-
-    @Test
-    public void testRefreshing() {
-        for (int i = 0; i < cache.getMaxSize(); i++) {
-            cache.insert(i + 1, String.valueOf(i + 1));
-        }
-
-        // Refresh entry #1
-        cache.refresh(1);
-
-        cache.insert(cache.getMaxSize() + 1, String.valueOf(cache.getMaxSize() + 1));
-
-
-        assertTrue(cache.contains(1));
-        assertFalse(cache.contains(2));
-
-        for (int i = 2; i < cache.getMaxSize() + 1; i++) {
-            assertTrue(cache.contains(i + 1));
-        }
     }
 }

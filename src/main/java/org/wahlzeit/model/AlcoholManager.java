@@ -1,31 +1,42 @@
 package org.wahlzeit.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.wahlzeit.model.cache.Cache;
+import org.wahlzeit.model.cache.ObjectCache;
 
 public class AlcoholManager {
 
-    private static final Map<String, AlcoholType> alcoholTypes = new HashMap<>();
+    private static AlcoholManager instance;
 
-    public static Alcohol createAlcohol(String alcoholName, String typeName, String[] ingredients) {
-        final AlcoholType alcoholType = getAlcoholType(typeName, ingredients);
-        final Alcohol alcohol = alcoholType.createInstance(alcoholName);
-        return alcohol;
+    private final Cache<Alcohol, Alcohol> alcoholCache;
+    private final Cache<AlcoholType, AlcoholType> alcoholTypeCache;
+
+    public AlcoholManager() {
+        alcoholCache = new ObjectCache<>();
+        alcoholTypeCache = new ObjectCache<>();
     }
 
-    public static Alcohol createAlcohol(String alcoholName, AlcoholType alcoholType) {
-        return createAlcohol(alcoholName, alcoholType.getTypeName(), alcoholType.getIngredients());
-    }
-
-    public static synchronized AlcoholType getAlcoholType(String typeName, String[] ingredients) {
-        if (alcoholTypes.containsKey(typeName)) {
-            return alcoholTypes.get(typeName);
+    public static synchronized AlcoholManager getInstance() {
+        if (instance == null) {
+            instance = new AlcoholManager();
         }
+        return instance;
+    }
 
-        final AlcoholType alcoholType = new AlcoholType(typeName, ingredients);
+    public synchronized AlcoholType getAlcoholTypeInstance(String typeName, String[] ingredients) {
+        final AlcoholType alcoholType = createAlcoholType(typeName, ingredients);
+        return alcoholTypeCache.getOrInsert(alcoholType, alcoholType);
+    }
 
-        alcoholTypes.put(typeName, alcoholType);
+    public synchronized Alcohol getAlcoholInstance(String name, AlcoholType alcoholType) {
+        final Alcohol alcohol = createAlcohol(name, alcoholType);
+        return alcoholCache.getOrInsert(alcohol, alcohol);
+    }
 
-        return alcoholType;
+    private Alcohol createAlcohol(String name, AlcoholType alcoholType) {
+        return new Alcohol(name, alcoholType);
+    }
+
+    private AlcoholType createAlcoholType(String typeName, String[] ingredients) {
+        return new AlcoholType(typeName, ingredients);
     }
 }
